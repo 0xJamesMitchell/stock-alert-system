@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Alert System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Stock Alert System</h1>
+        <div class="add-stock">
+            <h2>Add Stock Alert</h2>
+            <form id="stock-form">
+                <input type="text" id="symbol" placeholder="Stock Symbol (e.g. AAPL)" required>
+                <input type="number" id="price-threshold" placeholder="Price Threshold" step="0.01" required>
+                <select id="alert-type">
+                    <option value="above">Alert when above</option>
+                    <option value="below">Alert when below</option>
+                </select>
+                <button type="submit">Add Alert</button>
+            </form>
+        </div>
+        <div class="alerts-list">
+            <h2>Active Alerts</h2>
+            <div id="alerts-container">
+                <p>No alerts configured yet.</p>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
