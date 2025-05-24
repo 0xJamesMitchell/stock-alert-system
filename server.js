@@ -2,11 +2,13 @@ const express = require('express');
 const path = require('path');
 const StockAPI = require('./stockApi');
 const AlertManager = require('./alertManager');
+const Monitor = require('./monitor');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const stockAPI = new StockAPI();
 const alertManager = new AlertManager();
+const monitor = new Monitor();
 
 app.use(express.json());
 app.use(express.static('public'));
@@ -51,4 +53,5 @@ app.delete('/api/alerts/:id', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+    monitor.start();
 });
