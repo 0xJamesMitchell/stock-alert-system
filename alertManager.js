@@ -12,8 +12,13 @@ class AlertManager {
         try {
             const data = await fs.readFile(this.alertsFile, 'utf8');
             this.alerts = JSON.parse(data);
+            console.log(`Loaded ${this.alerts.length} alerts from storage`);
         } catch (error) {
-            console.log('No existing alerts file, starting fresh');
+            if (error.code === 'ENOENT') {
+                console.log('No existing alerts file, starting fresh');
+            } else {
+                console.error('Error loading alerts file:', error.message);
+            }
             this.alerts = [];
         }
     }
@@ -27,10 +32,23 @@ class AlertManager {
     }
     
     addAlert(alert) {
+        if (!alert.symbol || !alert.threshold || !alert.type) {
+            throw new Error('Missing required alert parameters');
+        }
+        
+        if (!['above', 'below'].includes(alert.type)) {
+            throw new Error('Alert type must be "above" or "below"');
+        }
+        
+        const threshold = parseFloat(alert.threshold);
+        if (isNaN(threshold) || threshold <= 0) {
+            throw new Error('Threshold must be a positive number');
+        }
+        
         const newAlert = {
             id: Date.now() + Math.random(),
-            symbol: alert.symbol.toUpperCase(),
-            threshold: parseFloat(alert.threshold),
+            symbol: alert.symbol.toUpperCase().trim(),
+            threshold: threshold,
             type: alert.type,
             active: true,
             createdAt: new Date().toISOString()
