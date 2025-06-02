@@ -2,12 +2,14 @@ const cron = require('node-cron');
 const StockAPI = require('./stockApi');
 const AlertManager = require('./alertManager');
 const EmailNotifier = require('./emailNotifier');
+const PriceHistory = require('./priceHistory');
 
 class Monitor {
     constructor() {
         this.stockAPI = new StockAPI();
         this.alertManager = new AlertManager();
         this.emailNotifier = new EmailNotifier();
+        this.priceHistory = new PriceHistory();
         this.isRunning = false;
     }
     
@@ -45,6 +47,16 @@ class Monitor {
     async checkStock(symbol) {
         try {
             const stockData = await this.stockAPI.getStockPrice(symbol);
+            
+            // Record price in history
+            this.priceHistory.addPrice(symbol, stockData.price, stockData.timestamp);
+            
+            // Get price change info
+            const priceChange = this.priceHistory.getPriceChange(symbol);
+            if (priceChange) {
+                console.log(`${symbol}: $${stockData.price} (${priceChange.change > 0 ? '+' : ''}${priceChange.change.toFixed(2)}, ${priceChange.changePercent.toFixed(2)}%)`);
+            }
+            
             const triggeredAlerts = this.alertManager.checkAlerts(stockData);
             
             if (triggeredAlerts.length > 0) {
