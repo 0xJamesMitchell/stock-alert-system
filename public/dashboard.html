@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Stock Alert System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="index.html">Alerts</a> | 
+            <a href="dashboard.html"><strong>Dashboard</strong></a>
+        </nav>
+        
+        <h1>Stock Dashboard</h1>
+        
+        <div class="dashboard-section">
+            <h2>Quick Stock Check</h2>
+            <div class="stock-lookup">
+                <input type="text" id="lookup-symbol" placeholder="Enter symbol (e.g. AAPL)">
+                <button onclick="lookupStock()">Get Price</button>
+            </div>
+            <div id="stock-info"></div>
+        </div>
+        
+        <div class="dashboard-section">
+            <h2>Monitored Stocks</h2>
+            <div id="monitored-stocks">
+                <p>Loading...</p>
+            </div>
+        </div>
+        
+        <div class="dashboard-section">
+            <h2>Recent Price Changes</h2>
+            <div id="price-changes">
+                <p>Price change data will appear here</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="dashboard.js"></script>
+</body>
+</html>

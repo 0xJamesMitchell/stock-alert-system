@@ -22,12 +22,14 @@ class Monitor {
         console.log('Starting stock price monitor...');
         this.isRunning = true;
         
-        cron.schedule('*/5 * * * *', async () => {
+        const config = require('./config');
+        
+        cron.schedule(config.getMonitorCronExpression(), async () => {
             console.log('Checking stock prices...');
             await this.checkAllStocks();
         });
         
-        console.log('Monitor scheduled to run every 5 minutes');
+        console.log(`Monitor scheduled to run every ${config.monitorInterval} minutes`);
     }
     
     async checkAllStocks() {

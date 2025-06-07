@@ -1,12 +1,12 @@
 const express = require('express');
 const path = require('path');
+const config = require('./config');
 const StockAPI = require('./stockApi');
 const AlertManager = require('./alertManager');
 const Monitor = require('./monitor');
 const PriceHistory = require('./priceHistory');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 const stockAPI = new StockAPI();
 const alertManager = new AlertManager();
 const priceHistory = new PriceHistory();
@@ -74,7 +74,9 @@ app.get('/api/stats/:symbol', (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen(config.port, () => {
+    console.log(`\n🚀 Stock Alert System started`);
+    config.log();
+    console.log(`\n📊 Server running on port ${config.port}`);
     monitor.start();
 });

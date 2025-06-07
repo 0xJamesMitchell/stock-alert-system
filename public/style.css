@@ -72,3 +72,109 @@ button:hover {
 .alert-item button:hover {
     background-color: #c82333;
 }
+
+/* Navigation */
+nav {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+nav a {
+    color: #007bff;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* Dashboard styles */
+.dashboard-section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.stock-lookup {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.stock-card {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    border-left: 4px solid #28a745;
+}
+
+.stock-card h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.stock-card .price {
+    font-size: 24px;
+    font-weight: bold;
+    color: #28a745;
+    margin-bottom: 10px;
+}
+
+.stock-card .timestamp, .stock-card .source {
+    color: #666;
+    font-size: 14px;
+}
+
+.stock-card .mock-indicator {
+    color: #856404;
+    background: #fff3cd;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.stock-card .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.stock-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 2fr;
+    gap: 15px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    align-items: center;
+}
+
+.stock-summary:last-child {
+    border-bottom: none;
+}
+
+.stock-summary .symbol {
+    font-weight: bold;
+    color: #333;
+}
+
+.stock-summary .price {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.stock-summary .timestamp {
+    color: #666;
+    font-size: 14px;
+}
+
+.error {
+    color: #dc3545;
+}
