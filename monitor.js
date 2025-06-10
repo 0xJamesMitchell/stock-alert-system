@@ -3,6 +3,7 @@ const StockAPI = require('./stockApi');
 const AlertManager = require('./alertManager');
 const EmailNotifier = require('./emailNotifier');
 const PriceHistory = require('./priceHistory');
+const logger = require('./logger');
 
 class Monitor {
     constructor() {
@@ -19,17 +20,17 @@ class Monitor {
             return;
         }
         
-        console.log('Starting stock price monitor...');
+        logger.info('Starting stock price monitor...');
         this.isRunning = true;
         
         const config = require('./config');
         
         cron.schedule(config.getMonitorCronExpression(), async () => {
-            console.log('Checking stock prices...');
+            logger.info('Starting scheduled price check');
             await this.checkAllStocks();
         });
         
-        console.log(`Monitor scheduled to run every ${config.monitorInterval} minutes`);
+        logger.info(`Monitor scheduled to run every ${config.monitorInterval} minutes`);
     }
     
     async checkAllStocks() {
@@ -62,16 +63,23 @@ class Monitor {
             const triggeredAlerts = this.alertManager.checkAlerts(stockData);
             
             if (triggeredAlerts.length > 0) {
-                console.log(`🚨 ${triggeredAlerts.length} alert(s) triggered for ${symbol} at $${stockData.price}`);
+                logger.warn(`${triggeredAlerts.length} alert(s) triggered for ${symbol}`, { 
+                    price: stockData.price, 
+                    alerts: triggeredAlerts.length 
+                });
                 
                 triggeredAlerts.forEach(alert => {
-                    console.log(`Alert: ${alert.symbol} ${alert.type} $${alert.threshold} - Current: $${alert.currentPrice}`);
+                    logger.info(`Alert triggered: ${alert.symbol} ${alert.type} $${alert.threshold}`, {
+                        currentPrice: alert.currentPrice,
+                        threshold: alert.threshold,
+                        type: alert.type
+                    });
                 });
                 
                 await this.sendNotifications(triggeredAlerts, stockData);
             }
         } catch (error) {
-            console.error(`Error checking stock ${symbol}:`, error.message);
+            logger.error(`Error checking stock ${symbol}`, { error: error.message });
         }
     }
     

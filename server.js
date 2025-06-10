@@ -5,6 +5,7 @@ const StockAPI = require('./stockApi');
 const AlertManager = require('./alertManager');
 const Monitor = require('./monitor');
 const PriceHistory = require('./priceHistory');
+const logger = require('./logger');
 
 const app = express();
 const stockAPI = new StockAPI();
@@ -74,9 +75,21 @@ app.get('/api/stats/:symbol', (req, res) => {
     }
 });
 
+app.get('/api/logs', async (req, res) => {
+    try {
+        const lines = parseInt(req.query.lines) || 100;
+        const logs = await logger.getRecentLogs(lines);
+        res.json({ logs });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to get logs' });
+    }
+});
+
 app.listen(config.port, () => {
     console.log(`\n🚀 Stock Alert System started`);
     config.log();
     console.log(`\n📊 Server running on port ${config.port}`);
+    
+    logger.info('Stock Alert System started', { port: config.port });
     monitor.start();
 });
